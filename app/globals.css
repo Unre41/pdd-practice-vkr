@@ -1,0 +1,304 @@
+:root {
+  --background: #f4f7fb;
+  --foreground: #14263d;
+}
+
+.traffic-board { width: 100%; height: auto; display: block; }
+.traffic-car { transition: transform 850ms ease-in-out, opacity 850ms ease-in; }
+@media (prefers-reduced-motion: reduce) { .traffic-car { transition: none; } }
+.traffic-light .active-red { background: #e75151; box-shadow: 0 0 20px #e75151; }
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-manrope), Arial, sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+@keyframes reward-pop {
+  0% { opacity: 0; transform: translateY(0.5rem) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.road-pattern {
+  background-image:
+    linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.8) 48%, rgba(255, 255, 255, 0.8) 52%, transparent 52%),
+    linear-gradient(0deg, rgba(24, 59, 99, 0.06), rgba(24, 59, 99, 0.06));
+}
+
+.scene-board {
+  position: relative;
+  isolation: isolate;
+}
+
+.sign {
+  display: grid;
+  place-items: center;
+  height: 9rem;
+  width: 9rem;
+  background: white;
+  color: #172019;
+  font-weight: 900;
+  box-shadow: 0 14px 30px rgba(25, 40, 30, 0.18);
+}
+
+.sign-speed {
+  border: 0.85rem solid #d62f2f;
+  border-radius: 50%;
+  font-size: 3rem;
+}
+
+.sign-no-entry {
+  border-radius: 50%;
+  background: #d62f2f;
+}
+
+.sign-no-entry span {
+  display: block;
+  height: 1.75rem;
+  width: 6.2rem;
+  border-radius: 0.2rem;
+  background: white;
+}
+
+.sign-stop {
+  clip-path: polygon(29% 0, 71% 0, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0 71%, 0 29%);
+  border: 0.55rem solid white;
+  outline: 0.55rem solid #c92e34;
+  outline-offset: -0.55rem;
+  background: #c92e34;
+  color: white;
+  font-size: 2rem;
+}
+
+.sign-main-road {
+  display: grid;
+  height: 8.2rem;
+  width: 8.2rem;
+  rotate: 45deg;
+  place-items: center;
+  border: 0.65rem solid white;
+  border-radius: 0.7rem;
+  background: #14263d;
+  box-shadow: 0 14px 30px rgba(25, 40, 30, 0.18);
+}
+
+.sign-main-road span {
+  display: block;
+  height: 5.65rem;
+  width: 5.65rem;
+  border-radius: 0.2rem;
+  background: #f4cf2d;
+}
+
+.sign-main-road.small {
+  height: 5.5rem;
+  width: 5.5rem;
+}
+
+.sign-main-road.small span {
+  height: 3.6rem;
+  width: 3.6rem;
+}
+
+.traffic-light {
+  display: grid;
+  gap: 0.55rem;
+  width: 6rem;
+  padding: 0.75rem;
+  border: 0.4rem solid #465048;
+  border-radius: 1.2rem;
+  background: #18201a;
+  box-shadow: 0 14px 30px rgba(25, 40, 30, 0.18);
+}
+
+.traffic-light span {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #3b443d;
+}
+
+.traffic-light .active-yellow { background: #ffd42a; box-shadow: 0 0 30px #ffd42a; }
+.traffic-light .active-green { background: #42bd6b; box-shadow: 0 0 24px #42bd6b; }
+.traffic-light.small { width: 4.4rem; border-width: 0.25rem; border-radius: 0.8rem; }
+
+.scene-pair {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.intersection-scene,
+.roundabout-scene,
+.bus-scene {
+  position: relative;
+  height: 14rem;
+  width: min(25rem, 90%);
+}
+
+.intersection-scene::before,
+.intersection-scene::after {
+  position: absolute;
+  content: '';
+  background: #536579;
+  border-radius: 0.5rem;
+}
+
+.intersection-scene::before { inset: 0 38%; }
+.intersection-scene::after { inset: 38% 0; }
+
+.scene-car {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  height: 2.25rem;
+  width: 4.1rem;
+  border-radius: 0.75rem;
+  background: #ffcf24;
+  border: 0.18rem solid #14263d;
+  box-shadow: 0 5px 12px rgba(20, 32, 24, 0.2);
+}
+
+.scene-car-window {
+  position: absolute;
+  inset: 0.42rem 1rem;
+  border-radius: 0.3rem;
+  background: #dff2e6;
+}
+
+.car-bottom { bottom: 1rem; left: 50%; translate: -50% 0; rotate: -90deg; }
+.car-top { top: 1rem; left: 50%; translate: -50% 0; rotate: 90deg; background: #f4f7fb; }
+.car-right { right: 1rem; top: 50%; translate: 0 -50%; rotate: 180deg; background: #f4f7fb; }
+.car-left { left: 1.1rem; top: 36%; }
+.car-road { right: 2rem; bottom: 28%; rotate: 180deg; background: #f4f7fb; }
+
+.route,
+.turn-arrow,
+.direction-arrow {
+  position: absolute;
+  z-index: 4;
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.route-up { left: 46%; top: 38%; }
+.route-left { right: 36%; top: 44%; }
+.route-turn { left: 42%; top: 36%; }
+.route-down { left: 47%; top: 25%; }
+.turn-arrow { left: 54%; bottom: 28%; color: #ffcf24; font-size: 3rem; }
+.direction-arrow { left: 34%; top: 38%; }
+
+.crosswalk {
+  position: absolute;
+  z-index: 2;
+  right: 25%;
+  top: 35%;
+  height: 30%;
+  width: 15%;
+  background: repeating-linear-gradient(90deg, white 0 0.35rem, transparent 0.35rem 0.7rem);
+}
+
+.pedestrian,
+.cyclist {
+  position: absolute;
+  z-index: 4;
+  right: 28%;
+  color: #14263d;
+  font-size: 1.8rem;
+}
+
+.pedestrian { top: 34%; }
+.cyclist { bottom: 32%; }
+
+.parking-label,
+.bus-stop-sign {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  height: 3rem;
+  width: 3rem;
+  border: 0.3rem solid white;
+  background: #2479c7;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.parking-label { left: 1rem; top: 0.5rem; }
+
+.roundabout-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  height: 10rem;
+  width: 10rem;
+  translate: -50% -50%;
+  place-items: center;
+  border: 2.8rem solid #536579;
+  border-radius: 50%;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+.car-circle { left: 50%; top: 1.3rem; translate: -50% 0; background: #f4f7fb; }
+.car-enter { bottom: 0.5rem; left: 50%; translate: -50% 0; rotate: -90deg; }
+
+.bus-scene::before {
+  position: absolute;
+  inset: 38% 0;
+  content: '';
+  border-radius: 0.5rem;
+  background: #536579;
+}
+
+.bus {
+  position: absolute;
+  z-index: 3;
+  left: 18%;
+  top: 42%;
+  display: grid;
+  height: 3.2rem;
+  width: 8rem;
+  place-items: center;
+  border: 0.2rem solid #14263d;
+  border-radius: 0.7rem;
+  background: #183b63;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.bus-stop-sign { left: 9%; top: 15%; border-radius: 0.25rem; }
+.car-following { right: 10%; top: 44%; rotate: 180deg; background: #f4f7fb; }
+.bus-arrow { position: absolute; z-index: 4; left: 49%; top: 43%; color: white; font-size: 2rem; font-weight: 900; }
+
+@media (max-width: 520px) {
+  .intersection-scene,
+  .roundabout-scene,
+  .bus-scene { scale: 0.82; }
+  .scene-pair { gap: 2.5rem; scale: 0.9; }
+}
+
+
+.game-shell { background: radial-gradient(ellipse at 20% 0%, #28493f 0, #142b38 50%, #10212d 100%); }
+.game-car-ready { cursor: pointer; }
+.game-car-ready:hover .car-focus, .game-car-ready:focus .car-focus { stroke: #fff3b6; fill: rgba(255,243,182,.12); }
+.game-car:focus { outline: none; }
+.mission-reward { animation: reward-pop 250ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .mission-reward { animation: none; } }

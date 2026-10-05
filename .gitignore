@@ -1,0 +1,32 @@
+# Dependencies and caches
+/node_modules/
+/.pnpm-store/
+/.pnp/
+.pnp.*
+
+# Build output
+/.next/
+/.vinext/
+/dist/
+/out/
+/build/
+next-env.d.ts
+*.tsbuildinfo
+
+# Tests
+/coverage/
+/test-results/
+/playwright-report/
+
+# Local configuration
+.env*
+!.env.example
+.vercel/
+.wrangler/
+
+# Temporary files
+/tmp/
+*.log
+.DS_Store
+Thumbs.db
+*.pem
