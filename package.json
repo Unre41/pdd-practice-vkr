@@ -7,8 +7,7 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "vinext start",
+    "build": "next build",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
     "typecheck": "tsc --noEmit",
